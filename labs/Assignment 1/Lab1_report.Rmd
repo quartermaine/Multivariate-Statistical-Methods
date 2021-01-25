@@ -1,6 +1,6 @@
 ---
-title: "Lab1"
-author: "Andreas C Charitos[andch552]"
+title: "Lab1\nExamining multivariate data"
+author: "Andreas C Charitos [andch552]"
 date: "1/22/2021"
 output: pdf_document
 ---
@@ -19,10 +19,13 @@ library(knitr)
 library(dplyr)
 library(plotly)
 library(RColorBrewer)
+library(aplpack)
 ```
 
 
 # Problem 1
+
+## Data Overview
 
 ```{r, echo=FALSE}
 dt = read.delim("T1-9.dat", header=FALSE)
@@ -35,6 +38,11 @@ kable(dt[1:3,],
 ```
 
 ## a)
+Compute the means, the variances and the standard deviations for all variables.
+
+ 
+Table of column means
+---------------------
 
 ```{r,echo=F}
 col_means = sapply(dt[, -1], mean)
@@ -43,6 +51,20 @@ kable(col_means,
 
 ```
 
+Table of column variances
+-------------------------
+
+```{r,echo=F}
+col_var = sapply(dt[, -1], var)
+
+kable(col_var,
+       caption = "Column variances")
+
+```
+  
+
+Table of column standard deviations
+-----------------------------------
 
 ```{r,echo=F}
 col_sd = sapply(dt[, -1], sd)
@@ -51,7 +73,16 @@ kable(col_sd,
 
 ```
 
+
+The tables above provide an overview of the column mean, variance and standard deviations for all the variables.
+
 ## b)
+
+Illustrate the variables using box-plots and histograms. Do the variables look normally distributed? Justify your answer.
+
+Histograms
+----------
+
 
 ```{r,echo=F}
 # Histograms
@@ -60,7 +91,7 @@ kable(col_sd,
 x = seq(-5, 5, 0.1)
 y = dnorm(x)
 par(mar=rep(2,4))
-par(mfrow=c(4,2), bg='whitesmoke')
+par(mfrow=c(4,2), bg='whitesmoke', mar=c(1.9,1.9,1.9,1.9))
 for (i in 2:8){
   hist(scale(dt[, i]),
        freq=FALSE,
@@ -72,12 +103,13 @@ for (i in 2:8){
 }
 ```
 
-
+Boxplots
+--------
 
 ```{r,echo=F}
 # Boxplots
 par(mar=rep(2,4))
-par(mfrow=c(4,2), bg='whitesmoke')
+par(mfrow=c(4,2), bg='whitesmoke', mar=c(1.9,1.9,1.9,1.9))
 for(i in 2:9){
   if(i!=9){
   boxplot(dt[, i], horizontal = TRUE, 
@@ -102,9 +134,18 @@ for(i in 2:9){
 
 ```
 
+For all of the variables there seems to be outliers towards their upper quantiles. The closest variable to a normal distribution
+is the variable 100. Another issue with the data is that is truncated and thus by construction doesn’t have the same domain of a normal
+distribution over the random variable.
+
 # Problem 2
 
 ## a)
+Compute the covariance and correlation matrices for the 7 variables.
+
+
+Correlation matrix
+------------------
 
 ```{r,echo=FALSE}
 
@@ -115,20 +156,46 @@ corr_mat=cor(dt[, 2:8]) ; cov_mat=cov(dt[, 2:8])
 # print(corr_mat)
 kable(corr_mat,
       caption = "Correlation matrix")
+
+```
+
+
+Covariance matrix
+-----------------
+
+```{r, echo=F}
 # print covariance mat
 # print(cov_mat)
 kable(cov_mat,
       caption = "Covariance matrix")
 
+
 ```
 
 
+Heatmap
+-------
+
+```{r,echo=FALSE}
+
+# Heatmap ---------------------------------------------
+my_cols= colorRampPalette(brewer.pal(8, "Paired"))(25)
+heatmap(as.matrix(dt[, 2:8]), labRow=dt$country, scale='column', col = my_cols)
+
+```
+
 ## b)
+Illustrate the relations between variables for the 6 pairs: $(x_1 ; x_2 ), (x_2 ; x_3 ), (x_3 ; x_4 ), (x_4 ; x_5 ),
+(x_5 ; x_6 ) and (x_6 ; x_7 )$, using scatterplots. Do you observe some extreme values?
+
+Scatterplots
+------------
+
 
 ```{r,echo=FALSE}
 
 # b) ---------------------------------------------
-par(mfrow=c(3,2), bg='whitesmoke')
+par(mfrow=c(3,2), bg='whitesmoke', mar=c(1.9,1.9,1.9,1.9))
 for(i in 2:7){
   name1=colnames(dt)[i+1]
   name0=colnames(dt)[i]
@@ -144,20 +211,39 @@ for(i in 2:7){
 
 ```
 
+As we can see from the above scatterplots the extreme values are present always on the upper quantiles of each variables. 
+Meaning that there are some countries that excels on each category. 
+
+<!-- Moreover, While the lower tracks seem to have a linear dependence to each other, this behaviour vanishes as -->
+<!-- the track length of one increases. So a track long track compares to a short track have more like a normal -->
+<!-- density around a shifted mean. If both tracks are long, this we see a mixture of these behaviours: Somehow -->
+<!-- they cluster up, but still remain some linear dependency (which makes sense to a degree that the track -->
+<!-- lenghts actually increase linearly). Also it seems more likely to have outliers for the longer tracks. This can -->
+<!-- also be seen in the histograms of the previous exercise. -->
 
 ## c)
+Which other plotting possibilities for multivariate data you know? Present at least one of them for the given data set. Why did you choose this graph?
 
-```{r,echo=FALSE}
 
-# c) ---------------------------------------------
-my_cols= colorRampPalette(brewer.pal(8, "PiYG"))(25)
-heatmap(as.matrix(dt[, 2:8]), labRow=dt$country, scale='column', col = my_cols)
 
+Chernoff faces plot
+-------------------
+
+```{r, echo=FALSE}
+set.seed(13)
+ncolors = sample(colors(), 8) 
+# Chernoff faces.
+faces(dt[, -1], face.type = 1, col.face = rainbow(50)) 
 
 ```
 
 
 # Problem 3
+In problem 2, b) you observed some extreme values. Which countries look the most extreme?
+One of the possibilities to answer this question is to compute a distance between an observation and the sample mean vector (to look how far an observation is from the average). Compute the Euclidean distances of observations from the sample mean for all countries. Which 3 countries are the most extreme?
+
+Top 3 most extreme countries
+----------------------------
 
 ```{r,echo=FALSE}
 
@@ -167,13 +253,20 @@ euclidean_dist=function(X){
 return(X_dist)
 }
 
-distances_ed = euclidean_dist(as.matrix(dt[, 2:8]));
-idxs = sort(distances_ed, decreasing=TRUE, index.return=TRUE)$ix;
+distances_ed = euclidean_dist(as.matrix(dt[, 2:8]))
+idxs = sort(distances_ed, decreasing=TRUE, index.return=TRUE)$ix
 countries = dt$country[idxs[1:5]]
-kable(as.data.frame(countries))
+countries = as.data.frame(countries)
+countries$most_extreme <- 1:nrow(countries)
+kable(countries)
+
 
 ```
 
+From the scatter plots we can see that there are four countries that stand out the most on the 800 meters
+track. The countries are SAM, COK, PNG and GUA. These countries are the same ones thata are the most
+slow on the feature heatmap and hierarchical cluster presented above. They are considered “extreme” because
+they are the slowest countries overall.
 
 
 \newpage

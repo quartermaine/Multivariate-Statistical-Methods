@@ -7,6 +7,7 @@ library(knitr)
 library(dplyr)
 library(plotly)
 library(RColorBrewer)
+library(aplpack)
 # Assignment 1 ------------------------------------------------------------
 
 dt = read.delim("T1-9.dat", header=FALSE)
@@ -17,6 +18,9 @@ head(dt)
 
 col_means = sapply(dt[, -1], mean)
 print(col_means, round(3))
+
+col_var = sapply(dt[, -1], var)
+print(col_var)
 
 col_sd = sapply(dt[, -1], sd)
 print(col_sd)
@@ -47,9 +51,9 @@ col='gray',
 border='blue', panel.first = grid(25,25))
 lines(x, y, col='tomato4')
 }
-
+  
 # Boxplots
-par(mfrow=c(4,2), bg='whitesmoke')
+par(mfrow=c(4,2), bg='whitesmoke', mar=c(1.9,1.9,1.9,1.9))
 for(i in 2:9){
   if(i!=9){
   boxplot(dt[, i], horizontal = TRUE, main = paste('Boxplot for variable', colnames(dt)[i]))
@@ -99,7 +103,12 @@ for(i in 2:7){
 # c) ---------------------------------------------
 
 my_cols= colorRampPalette(brewer.pal(8, "PiYG"))(25)
-heatmap(as.matrix(dt[, 2:8]), labRow=dt$country, scale='column', col = my_cols)
+heatmap(as.matrix(dt[, 2:8]), labRow=dt$country, scale='column', col = my_cols, revC = T)
+
+set.seed(13)
+ncolors = sample(colors(), 8) 
+# Chernoff faces.
+faces(dt[, -1], face.type = 1, col.face = rainbow(50)) 
 
 
 # Assignment 3 ------------------------------------------------------------
@@ -113,7 +122,9 @@ return(X_dist)
 distances_ed = euclidean_dist(as.matrix(dt[, 2:8])); distances_ed
 idxs = sort(distances_ed, decreasing=TRUE, index.return=TRUE)$ix;idxs
 countries = dt$country[idxs[1:5]]
-print(countries)
+countries = as.data.frame(countries)
+countries$imost_extereme <- 1:nrow(countries)
+kable(countries)
 
 
 
