@@ -8,6 +8,7 @@ library(dplyr)
 library(plotly)
 library(RColorBrewer)
 library(aplpack)
+library(ggcorrplot)
 # Assignment 1 ------------------------------------------------------------
 
 dt = read.delim("T1-9.dat", header=FALSE)
@@ -84,7 +85,12 @@ kable(corr_mat)
 print(cov_mat)
 kable(cov_mat)
 
-# b) ---------------------------------------------
+
+# correlation plot 
+heatmap(cor(dt[,2:8]), Rowv=NA, Colv=NA, revC=TRUE, main="Correlation plot")
+
+
+# b) --------------------------library("ggcorrplot") -------------------
 par(mfrow=c(3,2), bg='whitesmoke')
 for(i in 2:7){
   name1=colnames(dt)[i+1]
@@ -102,8 +108,10 @@ for(i in 2:7){
 
 # c) ---------------------------------------------
 
-my_cols= colorRampPalette(brewer.pal(8, "PiYG"))(25)
-heatmap(as.matrix(dt[, 2:8]), labRow=dt$country, scale='column', col = my_cols, revC = T)
+# my_cols = colorRampPalette(c("cyan", "deeppink3")) 
+# heatmap(as.matrix(dt[, 2:8]), labRow=dt$country, col = my_cols(100), revC = T)
+# 
+
 
 set.seed(13)
 ncolors = sample(colors(), 8) 

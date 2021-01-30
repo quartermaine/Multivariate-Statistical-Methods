@@ -178,11 +178,12 @@ Heatmap
 
 ```{r,echo=FALSE}
 
-# Heatmap ---------------------------------------------
-my_cols= colorRampPalette(brewer.pal(8, "Paired"))(25)
-heatmap(as.matrix(dt[, 2:8]), labRow=dt$country, scale='column', col = my_cols)
-
+# Heatmap correlation plot---------------------------------------------
+heatmap(cor(dt[,2:8]), Rowv=NA, Colv=NA, revC=TRUE, main="Correlation plot")
 ```
+
+From the heatmap plot above we can conclude that we have two groups of tracks that are cmore correlated than the others.
+One group is formed by the: {100m, 200m and 400} ond the other group from the {800m, 1500m, 3000m and the marathon} variables.
 
 ## b)
 Illustrate the relations between variables for the 6 pairs: $(x_1 ; x_2 ), (x_2 ; x_3 ), (x_3 ; x_4 ), (x_4 ; x_5 ),
@@ -245,6 +246,19 @@ One of the possibilities to answer this question is to compute a distance betwee
 Top 3 most extreme countries
 ----------------------------
 
+The euclidean distance is defined as :
+
+$$d(\vec{x}, \bar{x})=\sqrt{(\vec{x}-\bar{x})^{T}(\vec{x}-\bar{x})}$$
+
+The distance can be immediately generalized to the $L^r, r>0$ distance as 
+
+$$d_{L^{r}}(\vec{x}, \bar{x})=\left(\sum_{i=1}^{p}\left|\vec{x}_{i}-\bar{x}_{i}\right|^{r}\right)^{1 / r}$$
+
+where $p$ is the dimension of the osbervation (here $p = 7$).
+
+Table of extreme countries
+--------------------------
+
 ```{r,echo=FALSE}
 
 euclidean_dist=function(X){
@@ -263,10 +277,10 @@ kable(countries)
 
 ```
 
-From the scatter plots we can see that there are four countries that stand out the most on the 800 meters
-track. The countries are SAM, COK, PNG and GUA. These countries are the same ones thata are the most
-slow on the feature heatmap and hierarchical cluster presented above. They are considered “extreme” because
-they are the slowest countries overall.
+<!-- From the scatter plots we can see that there are four countries that stand out the most on the 800 meters -->
+<!-- track. The countries are SAM, COK, PNG and GUA. These countries are the same ones thata are the most -->
+<!-- slow on the feature heatmap and hierarchical cluster presented above. They are considered “extreme” because -->
+<!-- they are the slowest countries overall. -->
 
 
 \newpage
