@@ -27,6 +27,10 @@ library(aplpack)
 
 ## Data Overview
 
+Table of the first 3 lines of the data
+--------------------------------------
+
+
 ```{r, echo=FALSE}
 dt = read.delim("T1-9.dat", header=FALSE)
 
@@ -223,9 +227,8 @@ Meaning that there are some countries that excels on each category.
 <!-- also be seen in the histograms of the previous exercise. -->
 
 ## c)
+
 Which other plotting possibilities for multivariate data you know? Present at least one of them for the given data set. Why did you choose this graph?
-
-
 
 Chernoff faces plot
 -------------------
@@ -238,6 +241,9 @@ faces(dt[, -1], face.type = 1, col.face = rainbow(50))
 
 ```
 
+
+The plot above provides a visualization of the data with the Chenoff faces, invented by Herman Chernoff in 1973, and can display multidiensional data in the shape of human face. More specifically, the individual parts of the human face, such as eyes, mouth and nose represent the variables of interest by their shape, size, placement and orientation [wikepedia](https://en.wikipedia.org/wiki/Chernoff_face). 
+Chenoff faces as mentioned before can effectively used to represent multidimensional data due to the fact that humans can easily recognoze faces and notice small changes easily.that is why we choose these plots as visualization of the data.
 
 # Problem 3
 In problem 2, b) you observed some extreme values. Which countries look the most extreme?
@@ -255,7 +261,7 @@ The distance can be immediately generalized to the $L^r, r>0$ distance as
 $$d_{L^{r}}(\vec{x}, \bar{x})=\left(\sum_{i=1}^{p}\left|\vec{x}_{i}-\bar{x}_{i}\right|^{r}\right)^{1 / r}$$
 
 where $p$ is the dimension of the osbervation (here $p = 7$).
-
+  
 Table of extreme countries
 --------------------------
 
@@ -285,7 +291,7 @@ kable(countries)
 
 \newpage
 
-# Apprendix 
+# Appendix 
 
 ```{r code=readLines(knitr::purl("/home/quartermaine/Desktop/multivariate_statistical_methods-732A97/labs/Assignment 1/Lab1_report.Rmd",documentation = 1)), echo = T, eval = F}
 ```
