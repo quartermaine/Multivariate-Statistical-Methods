@@ -242,7 +242,7 @@ faces(dt[, -1], face.type = 1, col.face = rainbow(50))
 ```
 
 
-The plot above provides a visualization of the data with the Chenoff faces, invented by Herman Chernoff in 1973, and can display multidiensional data in the shape of human face. More specifically, the individual parts of the human face, such as eyes, mouth and nose represent the variables of interest by their shape, size, placement and orientation [wikepedia](https://en.wikipedia.org/wiki/Chernoff_face). 
+The plot above provides a visualization of the data with the Chenoff faces, invented by Herman Chernoff in 1973, and can display multidiensional data in the shape of human face. More specifically, the individual parts of the human face, such as eyes, mouth and nose represent the variables of interest by their shape, size, placement and orientation [[source wikepedia]](https://en.wikipedia.org/wiki/Chernoff_face). 
 Chenoff faces as mentioned before can effectively used to represent multidimensional data due to the fact that humans can easily recognoze faces and notice small changes easily.that is why we choose these plots as visualization of the data.
 
 # Problem 3
