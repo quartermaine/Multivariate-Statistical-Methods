@@ -100,7 +100,7 @@ kable(cov_mat,
 ## ----echo=FALSE---------------------------------------------------------------
 
 # b) ---------------------------------------------
-par(mfrow=c(3,2), bg='whitesmoke')
+par(mfrow=c(3,2), bg='whitesmoke',  mar=c(2,2,2,2))
 for(i in 2:7){
   name1=colnames(dt)[i+1]
   name0=colnames(dt)[i]
@@ -108,8 +108,8 @@ for(i in 2:7){
   # print(title)
   plot(dt[, i], dt[, i+1], 
        xlab=colnames(dt)[i], ylab=colnames(dt)[i+1], 
-       col='red', pch =19,
-       main=paste("Scatterplot ", title))
+       col='purple', bg ='green' ,pch =21, lwd = 1,
+       main=paste("Scatterplot ", title), cex = 1.2)
   lm_model=lm(dt[,i+1]~dt[,i], data=dt)
   abline(lm_model,lty=2, lwd=2)
   }
